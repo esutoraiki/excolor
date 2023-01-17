@@ -1,8 +1,7 @@
 "use strict";
 
 const
-    l = require("./excolor.js"),
-    logs = l.logs
+    logs = require("./excolor.js")
 ;
 
 logs("Reset");

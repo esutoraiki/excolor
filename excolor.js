@@ -1,4 +1,4 @@
-exports.logs = ((message, type = "log") => {
+const logs = (message, type = "log") => {
     const
         r = "\x1b[0m", // reset
         s = "\x1b[", // start
@@ -82,6 +82,7 @@ exports.logs = ((message, type = "log") => {
                 case "!fg":
                 case "!color":
                     serie.push(39);
+                    break;
                 default:
                     serie.push(get_value_expresion(item, fg)); // Color
                     serie.push(get_value_expresion(item, fgb, 2)); // Color Bright
@@ -138,4 +139,6 @@ exports.logs = ((message, type = "log") => {
             console.log(init() + r);
             break;
     }
-});
+};
+
+module.exports = logs;
