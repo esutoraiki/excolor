@@ -13,10 +13,21 @@
   "keywords": [
     "colors",
     "color",
+    "colour",
     "terminal",
-    "npm",
+    "console",
+    "cli",
+    "string",
     "background",
-    "effects"
+    "effects",
+    "ansi",
+    "style",
+    "styles",
+    "formatting",
+    "shell",
+    "command line",
+    "command-line",
+    "text"
   ],
   "author": "John Sánchez Alvarez",
   "license": "MIT",
