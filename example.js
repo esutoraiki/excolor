@@ -1,7 +1,7 @@
 "use strict";
 
 const
-    logs = require("./excolor.js")
+    logs = require("./index.js")
 ;
 
 logs("Reset");
