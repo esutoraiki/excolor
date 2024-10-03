@@ -99,10 +99,14 @@ const logs = (message, type = "log") => {
         return s + sequence.join(";") + f;
     }
 
+    function handleMessage() {
+        console.log(message);
+    }
+
     function init() {
         let
             code_temp = [],
-            code_ent = message.split("%[")
+            code_ent = String(message).split("%[")
         ;
 
         code_temp.push(code_ent[0]);
@@ -117,6 +121,15 @@ const logs = (message, type = "log") => {
             for (let j = 1; j < code_ent_2.length; j++) {
                 code_temp.push(code_ent_2[j]);
             }
+        }
+
+        if (typeof message === "object") {
+            console.log("Press Enter to see more info (available for 5 seconds)");
+            process.stdin.once("data", handleMessage);
+
+            setTimeout(() => {
+                process.stdin.removeListener("data", handleMessage);
+            }, 5000);
         }
 
         return code_temp.join("");

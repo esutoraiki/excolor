@@ -15,3 +15,12 @@ This package allows you to easily set text with colors, background colors, and e
    ```bash
    npm i excolor
    ```
+
+## Usage
+
+To use exColor with ES6 syntax, you can do so as follows:
+
+```js
+import logs from "excolor"
+logs("%[yellowBright|bgRed|blink] Hello world of color ");
+```
