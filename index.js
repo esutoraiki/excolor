@@ -53,7 +53,8 @@ const logs = (message, type = "log") => {
     function sequence(value) {
         let
             serie = [],
-            sequence = []
+            sequence = [],
+            x256 = null
         ;
 
         const
@@ -61,6 +62,30 @@ const logs = (message, type = "log") => {
         ;
 
         for (let item of params) {
+            const
+                fg256Pattern = /^fg256\((\d{1,3})\)$/,
+                fg256match = item.match(fg256Pattern),
+
+                bg256Pattern = /^bg256\((\d{1,3})\)$/,
+                bg256match = item.match(bg256Pattern)
+            ;
+
+            if (fg256match) {
+                x256 = parseInt(fg256match[1], 10);
+
+                if ((x256 >= 0 && x256 <= 255)) {
+                    item = "fg256";
+                }
+            }
+
+            if (bg256match) {
+                x256 = parseInt(bg256match[1], 10);
+
+                if ((x256 >= 0 && x256 <= 255)) {
+                    item = "bg256";
+                }
+            }
+
             switch (item) {
                 case "normal":
                 case "reset":
@@ -83,6 +108,12 @@ const logs = (message, type = "log") => {
                 case "!color":
                     serie.push(39);
                     break;
+                case "fg256":
+                    serie.push(`38;5;${x256}`);
+                    break;
+                case "bg256":
+                    serie.push(`48;5;${x256}`);
+                    break;
                 default:
                     serie.push(get_value_expresion(item, fg)); // Color
                     serie.push(get_value_expresion(item, fgb, 2)); // Color Bright
@@ -95,7 +126,6 @@ const logs = (message, type = "log") => {
         }
 
         sequence = serie.filter(ele => ele !== null);
-
         return s + sequence.join(";") + f;
     }
 
@@ -135,23 +165,7 @@ const logs = (message, type = "log") => {
         return code_temp.join("");
     }
 
-    switch (type) {
-        case "log":
-            console.log(init() + r);
-            break;
-        case "info":
-            console.info(init() + r);
-            break;
-        case "error":
-            console.error(init() + r);
-            break;
-        case "debug":
-            console.debug(init() + r);
-            break;
-        default:
-            console.log(init() + r);
-            break;
-    }
+    console[type](init() + r);
 };
 
 module.exports = logs;

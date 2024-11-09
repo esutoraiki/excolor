@@ -85,3 +85,25 @@ logs("%[blink]blink");
 logs("%[invert]invert");
 logs("%[hide]hide");
 logs("%[strike]strike");
+
+logs("\n256 color mode table");
+logs("----------");
+
+
+const color = ["white", "black"];
+let x = 0, c = color[0], count = 1;
+
+for (let i = 0; i <= 255; i++) {
+    if ((i >= 0 && i <= 6) || (i >= 232 && i <= 243)) c = color[0];
+    if (i >= 7 && i <= 15 || (i >= 244 && i <= 255)) c = color[1];
+
+    if (i >= 16 && i <= 231) {
+        c = (count <= 18) ? color[0] : color[1];
+        count = (count === 36) ? 1 : count + 1;
+    }
+
+    logs(`%[fg256(${i})]Color ${i} %[${c}|bg256(${i})]Background ${i}`);
+}
+
+logs("\nTrue color");
+logs("----------");
