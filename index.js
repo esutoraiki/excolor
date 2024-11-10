@@ -35,15 +35,11 @@ const logs = (message, type = "log") => {
                 break;
             case 4:
                 result = (i > 4) ? i + 2 : i + 1;
-                if (result === 0) {
-                    result = null;
-                }
+                if (result === 0) result = null;
                 break;
             case 5:
                 result = (i > 4) ? i + 22 : i + 21;
-                if (result === 0) {
-                    result = null;
-                }
+                if (result === 0) result = null;
                 break;
         }
 
@@ -62,7 +58,15 @@ const logs = (message, type = "log") => {
         ;
 
         for (let item of params) {
+            let rgb = [0, 0, 0];
+
             const
+                rgbPattern = /^rgb\s*\(\s*(\d{1,3})\s*[,;:]\s*(\d{1,3})\s*[,;:]\s*(\d{1,3})\s*\)$/,
+                rgbmatch = item.match(rgbPattern),
+
+                bgrgbPattern = /^bgRgb\s*\(\s*(\d{1,3})\s*[,;:]\s*(\d{1,3})\s*[,;:]\s*(\d{1,3})\s*\)$/,
+                bgrgbmatch = item.match(bgrgbPattern),
+
                 fg256Pattern = /^fg256\((\d{1,3})\)$/,
                 fg256match = item.match(fg256Pattern),
 
@@ -72,18 +76,24 @@ const logs = (message, type = "log") => {
 
             if (fg256match) {
                 x256 = parseInt(fg256match[1], 10);
-
-                if ((x256 >= 0 && x256 <= 255)) {
-                    item = "fg256";
-                }
+                if ((x256 >= 0 && x256 <= 255)) item = "fg256";
             }
 
             if (bg256match) {
                 x256 = parseInt(bg256match[1], 10);
+                if ((x256 >= 0 && x256 <= 255)) item = "bg256";
+            }
 
-                if ((x256 >= 0 && x256 <= 255)) {
-                    item = "bg256";
-                }
+            if (rgbmatch) {
+                rgb = [parseInt(rgbmatch[1], 10), parseInt(rgbmatch[2], 10), parseInt(rgbmatch[3], 10)]
+                    .map(value => (value >= 0 && value <= 255) ? value : 0);
+                item = "fg";
+            }
+
+            if (bgrgbmatch) {
+                rgb = [parseInt(bgrgbmatch[1], 10), parseInt(bgrgbmatch[2], 10), parseInt(bgrgbmatch[3], 10)]
+                    .map(value => (value >= 0 && value <= 255) ? value : 0);
+                item = "bg";
             }
 
             switch (item) {
@@ -114,13 +124,19 @@ const logs = (message, type = "log") => {
                 case "bg256":
                     serie.push(`48;5;${x256}`);
                     break;
+                case "fg":
+                    serie.push(`38;2;${rgb[0]};${rgb[1]};${rgb[2]}`);
+                    break;
+                case "bg":
+                    serie.push(`48;2;${rgb[0]};${rgb[1]};${rgb[2]}`);
+                    break;
                 default:
-                    serie.push(get_value_expresion(item, fg)); // Color
-                    serie.push(get_value_expresion(item, fgb, 2)); // Color Bright
-                    serie.push(get_value_expresion(item, bg, 1)); // Background
-                    serie.push(get_value_expresion(item, bgb, 3)); // Background Bright
-                    serie.push(get_value_expresion(item, e, 4)); // Effects
-                    serie.push(get_value_expresion(item, en, 5)); // No effects
+                    serie.push(get_value_expresion(item, fg));      // Color
+                    serie.push(get_value_expresion(item, fgb, 2));  // Color Bright
+                    serie.push(get_value_expresion(item, bg, 1));   // Background
+                    serie.push(get_value_expresion(item, bgb, 3));  // Background Bright
+                    serie.push(get_value_expresion(item, e, 4));    // Effects
+                    serie.push(get_value_expresion(item, en, 5));   // No effects
                     break;
             }
         }

@@ -107,3 +107,5 @@ for (let i = 0; i <= 255; i++) {
 
 logs("\nTrue color");
 logs("----------");
+logs("%[rgb(255,151,0)]This line of text is colored rgb(255,151,0)");
+logs("%[bgRgb(69,42,4)|white]This line of text has a background color of fgRgb(69,42,4)");
