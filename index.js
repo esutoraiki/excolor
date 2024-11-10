@@ -46,6 +46,31 @@ const logs = (message, type = "log") => {
         return result;
     }
 
+    function extractRGB(m) {
+        return [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10)]
+            .map(v => (v >= 0 && v <= 255) ? v : 0);
+    }
+
+    function hexTOrgb(value) {
+        let rgb = [0, 0, 0];
+
+        if (value.length === 3) {
+            rgb = [
+                parseInt(value[0] + value[0], 16),
+                parseInt(value[1] + value[1], 16),
+                parseInt(value[2] + value[2], 16)
+            ];
+        } else {
+            rgb = [
+                parseInt(value[0] + value[1], 16),
+                parseInt(value[2] + value[3], 16),
+                parseInt(value[4] + value[5], 16)
+            ];
+        }
+
+        return rgb;
+    }
+
     function sequence(value) {
         let
             serie = [],
@@ -61,6 +86,12 @@ const logs = (message, type = "log") => {
             let rgb = [0, 0, 0];
 
             const
+                hexPattern = /^hex\(#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\)$/,
+                hexmatch = item.match(hexPattern),
+
+                bghexPattern = /^bgHex\(#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\)$/,
+                bghexmatch = item.match(bghexPattern),
+
                 rgbPattern = /^rgb\s*\(\s*(\d{1,3})\s*[,;:]\s*(\d{1,3})\s*[,;:]\s*(\d{1,3})\s*\)$/,
                 rgbmatch = item.match(rgbPattern),
 
@@ -85,14 +116,22 @@ const logs = (message, type = "log") => {
             }
 
             if (rgbmatch) {
-                rgb = [parseInt(rgbmatch[1], 10), parseInt(rgbmatch[2], 10), parseInt(rgbmatch[3], 10)]
-                    .map(value => (value >= 0 && value <= 255) ? value : 0);
+                rgb = extractRGB(rgbmatch);
                 item = "fg";
             }
 
             if (bgrgbmatch) {
-                rgb = [parseInt(bgrgbmatch[1], 10), parseInt(bgrgbmatch[2], 10), parseInt(bgrgbmatch[3], 10)]
-                    .map(value => (value >= 0 && value <= 255) ? value : 0);
+                rgb = extractRGB(bgrgbmatch);
+                item = "bg";
+            }
+
+            if (hexmatch) {
+                rgb = hexTOrgb(hexmatch[1]);
+                item = "fg";
+            }
+
+            if (bghexmatch) {
+                rgb = hexTOrgb(bghexmatch[1]);
                 item = "bg";
             }
 
@@ -131,12 +170,12 @@ const logs = (message, type = "log") => {
                     serie.push(`48;2;${rgb[0]};${rgb[1]};${rgb[2]}`);
                     break;
                 default:
-                    serie.push(get_value_expresion(item, fg));      // Color
-                    serie.push(get_value_expresion(item, fgb, 2));  // Color Bright
-                    serie.push(get_value_expresion(item, bg, 1));   // Background
-                    serie.push(get_value_expresion(item, bgb, 3));  // Background Bright
-                    serie.push(get_value_expresion(item, e, 4));    // Effects
-                    serie.push(get_value_expresion(item, en, 5));   // No effects
+                    serie.push(get_value_expresion(item, fg)); // Color
+                    serie.push(get_value_expresion(item, fgb, 2)); // Color Bright
+                    serie.push(get_value_expresion(item, bg, 1)); // Background
+                    serie.push(get_value_expresion(item, bgb, 3)); // Background Bright
+                    serie.push(get_value_expresion(item, e, 4)); // Effects
+                    serie.push(get_value_expresion(item, en, 5)); // No effects
                     break;
             }
         }

@@ -91,7 +91,7 @@ logs("----------");
 
 
 const color = ["white", "black"];
-let x = 0, c = color[0], count = 1;
+let c = color[0], count = 1;
 
 for (let i = 0; i <= 255; i++) {
     if ((i >= 0 && i <= 6) || (i >= 232 && i <= 243)) c = color[0];
@@ -108,4 +108,6 @@ for (let i = 0; i <= 255; i++) {
 logs("\nTrue color");
 logs("----------");
 logs("%[rgb(255,151,0)]This line of text is colored rgb(255,151,0)");
-logs("%[bgRgb(69,42,4)|white]This line of text has a background color of fgRgb(69,42,4)");
+logs("%[bgRgb(69,42,4)|white]This line of text has a background color of bgRgb(69,42,4)");
+logs("%[hex(#1F44A7)]This line of text is colored hex(#1F44A7)");
+logs("%[bgHex(#7A0000)|hex(#ee3)]This line of text has a background color of bgHex(#7A0000) and color hex(#ee3)");
