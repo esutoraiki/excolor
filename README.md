@@ -149,23 +149,11 @@ logs("%[blue|underline]Underlined Text%[reset] default text and style");
 
 These reset operators allow for fine control over styling, making it easy to return to default colors or clear specific effects without affecting the rest of the terminal's styling.
 
-#### Example:
-
-```js
-import logs from "excolor";
-logs("%[fg256(82)]This is a custom 256 color text");
-logs("%[bg256(124)]This text has a custom 256 color background");
-```
-
-Each color code can be referenced directly in `exColor` to customize your terminal output precisely as you desire.
-
-You can use ANSI's 256-color palette. Use `fg256(number)` for text and `bg256(number)` for background.
-
 ### RGB and Hexadecimal Colors
 
 For more customization, you can specify colors in RGB and Hexadecimal formats.
 
-- **RGB**: `rgb(r,g,b)` for text and `bgRgb(r,g,b)` for background.**RGB**: `rgb(r,g,b)` for text and `bgRgb(r,g,b)` for background.
+- **RGB**: `rgb(r,g,b)` for text and `bgRgb(r,g,b)` for background.
   
   The **RGB** format allows you to specify colors by setting values for **Red (R)**, **Green (G)**, and **Blue (B)**. Each of these components can take an integer value between 0 and 255, where:
   
@@ -191,7 +179,7 @@ For more customization, you can specify colors in RGB and Hexadecimal formats.
   - `GG` is the hexadecimal value for the green component.
   - `BB` is the hexadecimal value for the blue component.
   
-  Each pair can range from `00` (0 in decimal) to `FF` (255 in decimal), allowing for 256 possible values per color channel. For example, `#FF5733` represents a eddish-orange color, where `FF` is the maximum red, `57` is a moderate amount of green, and `33` is a small amount of blue.
+  Each pair can range from `00` (0 in decimal) to `FF` (255 in decimal), allowing for 256 possible values per color channel. For example, `#FF5733` represents a reddish-orange color, where `FF` is the maximum red, `57` is a moderate amount of green, and `33` is a small amount of blue.
 
 ```js
 import logs from "excolor";
@@ -199,7 +187,7 @@ logs("%[hex(#1F44A7)]This text is colored hex(#1F44A7)");
 logs("%[bgHex(#7A0000)|hex(#ee3)]background color with text color in hex");
 ```
 
-## Example in `example.js`
+### Example in `example.js`
 
 The `example.js` file included in the project provides detailed examples of all these features. Run this file to see the colors and effects in action and verify the functionality of the package.
 
